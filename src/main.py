@@ -9,6 +9,7 @@ import lectio
 import icalendar
 import caldav as caldav
 import cooltables
+import alarm
 
 # Dirty patch until timezone is implemented into lectio.py
 from pytz import timezone
@@ -247,7 +248,6 @@ class LectioCalDavSynchronizer:
             end,
             False
         )
-
         # Set timezone to Europe/Copenhagen
         for module in sched:
             module.start_time = TIMEZONE.localize(module.start_time)
@@ -256,6 +256,9 @@ class LectioCalDavSynchronizer:
         self.log.debug(f"Got {len(sched)} modules from lectio")
 
         sched_lookup = [self._get_module_id(module) for module in sched]
+
+        schedule = {x: self._get_module_id(x) for x in sched}
+        alarm.updateAlarm(schedule)
 
         # Get events to see which should be updated/removed/inserted
         events = self.cal.get_events(start, end)

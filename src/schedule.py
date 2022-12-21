@@ -2,6 +2,8 @@ from main import LectioCalDavSynchronizer
 from apscheduler.schedulers.blocking import BlockingScheduler
 from os import environ
 
+
+
 # Create scheduler
 scheduler = BlockingScheduler()
 synchronizer = LectioCalDavSynchronizer(
@@ -21,3 +23,4 @@ scheduler.add_job(synchronizer.sync, 'cron', hour="*")
 
 # Start blocking scheduler, which will run until program is terminated
 scheduler.start()
+
