@@ -5,7 +5,7 @@
 ![Codacy grade](https://img.shields.io/codacy/grade/76cecd863b67412fad55505149d99fce)
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/dnorhoj/lectiocal/latest?label=docker)](https://hub.docker.com/r/dnorhoj/lectiocal)
 
-This small script lets you synchronize your lectio.dk schedule with any standard CalDAV server.
+This small script lets you synchronize your lectio.dk schedule with any standard CalDAV server. And also uses voicemonkey to activate an alexa alarm.
 
 This has been developed and tested with `Python 3.10`. But it *should* work with any newer python 3 version.
 
@@ -57,6 +57,9 @@ LECTIO_PASSWORD="eX4mp13"
 CALDAV_URL="https://example.com"
 CALDAV_USERNAME="example@example.com"
 CALDAV_PASSWORD="example"
+
+monkey_access_token="token"
+monkey_secret_token="secret_token"
 ```
 
 ## Team translations
