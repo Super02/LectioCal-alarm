@@ -4,7 +4,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import time
 from pytz import timezone
 alarms = []
-ignore = ["Alle", "Frivillig"]
+ignore = ["Alle", "Frivillig"] # Ignore these subjects and titles (Skips modules with these names as they often are modules where attendance is not checked)
 jobs = {}
 
 scheduler = BackgroundScheduler()
@@ -15,10 +15,10 @@ debug = False
 def activateAlarm():
     if(debug):
         print("Activating alarm")
-        requests.post("https://discord.com/api/webhooks/1078046103867502632/xOND4H1UJS4NZn0bUgcG2ctp4y4FggAdvyAwMoZBxa9aEOmwhgYE3j_3lWHAk55k5ILZ", json={"content": "LectioPy alarm activated! (DEBUG)"})
+        requests.post(os.environ["discord_webhook_url"], json={"content": "LectioPy alarm activated! (DEBUG)"})
     else:
         requests.get("https://api.voicemonkey.io/trigger?access_token=" + os.environ["monkey_access_token"] + "&secret_token=" + os.environ["monkey_secret_token"] + "&monkey=lectiopy")
-        requests.post("https://discord.com/api/webhooks/1078046103867502632/xOND4H1UJS4NZn0bUgcG2ctp4y4FggAdvyAwMoZBxa9aEOmwhgYE3j_3lWHAk55k5ILZ", json={"content": "LectioPy alarm activated!"})
+        requests.post(os.environ["discord_webhook_url"], json={"content": "LectioPy alarm activated!"})
 
 def updateAlarm(schedule: list):
     print("Updating alarms")
@@ -33,7 +33,7 @@ def updateAlarm(schedule: list):
     alarms = []
     if len(temp) > 0:
         for i in range(len(temp)):
-            if(temp[i].subject == "L vf ps 1 3g" and temp[i].start_time.hour == 8 and temp[i].start_time.minute == 15):
+            if(temp[i].subject == "L vf ps 1 3g" and temp[i].start_time.hour == 8 and temp[i].start_time.minute == 15): # Special case for the first module in the day. As psychology starts at 8:35 instead of 8:15, we need to make an exception for this module.
                 alarms.append([temp[i].start_time - timedelta(minutes=55), schedule.get(temp[i])])
                 continue
             alarms.append([temp[i].start_time - timedelta(minutes=75), schedule.get(temp[i])])
