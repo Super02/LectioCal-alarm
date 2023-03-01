@@ -40,7 +40,6 @@ class LectioCalDavSynchronizer:
         self.cal_password = cal_password
 
         self.lec = self._lec_auth()
-        self.lec_user_id = self.lec.get_user_id()
         self.cal = caldav.CalDavClient(
             self.cal_username,
             self.cal_password,
@@ -157,13 +156,7 @@ class LectioCalDavSynchronizer:
 
         # Add url at start if it exists
         if module.url:
-            match = re.match(r"^(.*?)&prevurl", module.url)
-
-            if not match is None:
-                desc = match[1]
-            else:
-                desc = module.url
-
+            desc = re.match(r"^(.*?)&", module.url)[1]
 
             if module.extra_info:
                 desc += "\n\n"
@@ -248,8 +241,7 @@ class LectioCalDavSynchronizer:
         end = start+timedelta(days=31)
 
         # Get schedule for student
-        sched = self.lec.get_schedule_for_student(
-            self.lec_user_id,
+        sched = self.lec.me().get_schedule(
             start,
             end,
             False

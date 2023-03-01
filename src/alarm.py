@@ -15,8 +15,10 @@ debug = False
 def activateAlarm():
     if(debug):
         print("Activating alarm")
+        requests.post("https://discord.com/api/webhooks/1078046103867502632/xOND4H1UJS4NZn0bUgcG2ctp4y4FggAdvyAwMoZBxa9aEOmwhgYE3j_3lWHAk55k5ILZ", json={"content": "LectioPy alarm activated! (DEBUG)"})
     else:
         requests.get("https://api.voicemonkey.io/trigger?access_token=" + os.environ["monkey_access_token"] + "&secret_token=" + os.environ["monkey_secret_token"] + "&monkey=lectiopy")
+        requests.post("https://discord.com/api/webhooks/1078046103867502632/xOND4H1UJS4NZn0bUgcG2ctp4y4FggAdvyAwMoZBxa9aEOmwhgYE3j_3lWHAk55k5ILZ", json={"content": "LectioPy alarm activated!"})
 
 def updateAlarm(schedule: list):
     print("Updating alarms")
@@ -35,13 +37,14 @@ def updateAlarm(schedule: list):
                 alarms.append([temp[i].start_time - timedelta(minutes=55), schedule.get(temp[i])])
                 continue
             alarms.append([temp[i].start_time - timedelta(minutes=75), schedule.get(temp[i])])
-            print(alarms)
     alarms.sort()
     # Remove all jobs that does not have an id in the alarms list
     for job in jobs:
         if job not in [x[1] for x in alarms]:
-            print(job)
-            scheduler.remove_job(job)
+            try:
+                scheduler.remove_job(job)
+                jobs[job].remove()
+            except Exception as e:
+                pass
     for alarm in alarms:
         jobs[alarm[1]] = scheduler.add_job(activateAlarm, 'date', run_date=alarm[0], id=alarm[1], replace_existing=True)
-
