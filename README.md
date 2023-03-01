@@ -1,11 +1,8 @@
 # LectioCal
 
 ![License](https://img.shields.io/github/license/dnorhoj/LectioCal)
-![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/dnorhoj/LectioCal)
-![Codacy grade](https://img.shields.io/codacy/grade/76cecd863b67412fad55505149d99fce)
-[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/dnorhoj/lectiocal/latest?label=docker)](https://hub.docker.com/r/dnorhoj/lectiocal)
 
-This small script lets you synchronize your lectio.dk schedule with any standard CalDAV server. And also uses voicemonkey to activate an alexa alarm.
+This small script lets you synchronize your lectio.dk schedule with any standard CalDAV server. And also uses voicemonkey to activate an alexa alarm. This is a fork of the LectioCal script developed by dnorhoj. This project is not as polished as i mostly use it for my own use. So you may need to change alarm.py to your liking.
 
 This has been developed and tested with `Python 3.10`. But it *should* work with any newer python 3 version.
 
@@ -60,6 +57,7 @@ CALDAV_PASSWORD="example"
 
 monkey_access_token="token"
 monkey_secret_token="secret_token"
+discord_webook="webhook_url"
 ```
 
 ## Team translations
